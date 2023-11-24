@@ -1,1 +1,5 @@
 print("Hello shenyubo")
+
+for i in (1,5,1):
+    print(i)
+
