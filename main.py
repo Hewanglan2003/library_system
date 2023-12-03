@@ -7,6 +7,7 @@ from ui.class_info import Ui_MainWindow as Class_Window
 from ui.course_info import Ui_MainWindow as Course_Window
 from ui.choice_info import Ui_MainWindow as Choice_Window
 
+#Determine the settings of sql server before connecting
 server = "沈雨博"
 database = "student_management_system"
 username = "shenyubo"
@@ -105,21 +106,253 @@ class StudentWindow(QMainWindow, Studentinfo_Window):
 
         self.read_data()
 
-
 class ClassWindow(QMainWindow, Class_Window):
-    def __init__(self):
+    def __init__(self, cursor):
         super().__init__()
         self.setupUi(self)
+
+        self.cursor = cursor
+
+    def clear_table(self):
+        self.tableWidget.setRowCount(0)
+
+    def read_data(self):
+        self.clear_table()
+        # print("Running query...")
+        self.cursor.execute('select * from class')
+        data = self.cursor.fetchall()
+        # print("Fetched data:", data)
+
+        self.tableWidget.setRowCount(len(data))
+
+        for row_index, row_data in enumerate(data):
+            for col_index, col_data in enumerate(row_data):
+                item = QTableWidgetItem(str(col_data))
+                self.tableWidget.setItem(row_index, col_index, item)
+
+        # print("Query finished.")
+
+    def search_data(self):
+        c_no = self.lineEdit.text()
+        c_major = self.lineEdit_2.text()
+        c_college = self.lineEdit_3.text()
+
+        self.clear_table()
+
+        self.cursor.execute('select * from class where c_no= ? or c_major = ? ', (c_no, c_major))
+
+        data = self.cursor.fetchall()
+        # print("Fetched data:", data)
+
+        self.tableWidget.setRowCount(len(data))
+
+        for row_index, row_data in enumerate(data):
+            for col_index, col_data in enumerate(row_data):
+                item = QTableWidgetItem(str(col_data))
+                self.tableWidget.setItem(row_index, col_index, item)
+
+    def insert_data(self):
+        c_no = self.lineEdit.text()
+        c_major = self.lineEdit_2.text()
+        c_college = self.lineEdit_3.text()
+
+        self.cursor.execute("""
+                        MERGE INTO class AS target
+                        USING (VALUES (?, ?, ?)) AS source (c_no, c_major, c_college)
+                        ON target.c_no = source.c_no
+                        WHEN MATCHED THEN
+                            UPDATE SET c_major = source.c_major, c_college = source.c_college
+                        WHEN NOT MATCHED THEN
+                            INSERT (c_no, c_major, c_college) VALUES (source.c_no, source.c_major, source.c_college);
+                    """, (c_no, c_major, c_college))
+        self.cursor.commit()
+        self.read_data()
+
+    def delete_data(self):
+        c_no = self.lineEdit.text()
+        c_major = self.lineEdit_2.text()
+        c_college = self.lineEdit_3.text()
+
+        self.cursor.execute("delete from class where c_no = ?", (c_no))
+        self.cursor.commit()
+
+        self.read_data()
+
+    def update_data(self):
+        c_no = self.lineEdit.text()
+        c_major = self.lineEdit_2.text()
+        c_college = self.lineEdit_3.text()
+
+        self.cursor.execute("update class set c_major = ?, c_college = ? where c_no = ?", (c_major, c_college, c_no))
+        self.cursor.commit()
+
+        self.read_data()
 
 class ChoiceWindow(QMainWindow, Choice_Window):
-    def __init__(self):
+    def __init__(self, cursor):
         super().__init__()
         self.setupUi(self)
 
+        self.cursor = cursor
+
+    def clear_table(self):
+        self.tableWidget.setRowCount(0)
+
+    def read_data(self):
+        self.clear_table()
+        # print("Running query...")
+        self.cursor.execute('select * from choice')
+        data = self.cursor.fetchall()
+        # print("Fetched data:", data)
+
+        self.tableWidget.setRowCount(len(data))
+
+        for row_index, row_data in enumerate(data):
+            for col_index, col_data in enumerate(row_data):
+                item = QTableWidgetItem(str(col_data))
+                self.tableWidget.setItem(row_index, col_index, item)
+
+        # print("Query finished.")
+
+    def search_data(self):
+        ch_student_no = self.lineEdit.text()
+        ch_course_no = self.lineEdit_2.text()
+        ch_score = self.lineEdit_3.text()
+
+        self.clear_table()
+
+        self.cursor.execute('select * from choice where ch_student_no= ? or ch_course_no = ? ', (ch_student_no, ch_course_no))
+
+        data = self.cursor.fetchall()
+        # print("Fetched data:", data)
+
+        self.tableWidget.setRowCount(len(data))
+
+        for row_index, row_data in enumerate(data):
+            for col_index, col_data in enumerate(row_data):
+                item = QTableWidgetItem(str(col_data))
+                self.tableWidget.setItem(row_index, col_index, item)
+
+    def insert_data(self):
+        ch_student_no = self.lineEdit.text()
+        ch_course_no = self.lineEdit_2.text()
+        ch_score = self.lineEdit_3.text()
+
+        self.cursor.execute("""
+                        MERGE INTO choice AS target
+                        USING (VALUES (?, ?, ?)) AS source (ch_student_no, ch_course_no, ch_score)
+                        ON target.ch_student_no = source.ch_student_no and target.ch_course_no = source.ch_course_no
+                        WHEN MATCHED THEN
+                            UPDATE SET ch_score = source.ch_score
+                        WHEN NOT MATCHED THEN
+                            INSERT (ch_student_no, ch_course_no, ch_score) VALUES (source.ch_student_no, source.ch_course_no, source.ch_score);
+                    """, (ch_student_no, ch_course_no, ch_score))
+        self.cursor.commit()
+        self.read_data()
+
+    def delete_data(self):
+        ch_student_no = self.lineEdit.text()
+        ch_course_no = self.lineEdit_2.text()
+        ch_score = self.lineEdit_3.text()
+
+        self.cursor.execute("delete from choice where ch_student_no = ? and ch_course_no = ?", (ch_student_no, ch_course_no))
+        self.cursor.commit()
+
+        self.read_data()
+
+    def update_data(self):
+        ch_student_no = self.lineEdit.text()
+        ch_course_no = self.lineEdit_2.text()
+        ch_score = self.lineEdit_3.text()
+
+        self.cursor.execute("update choice set ch_score = ? where ch_student_no = ? and ch_course_no = ?", (ch_score, ch_student_no, ch_course_no))
+        self.cursor.commit()
+
+        self.read_data()
+
 class CourseWindow(QMainWindow, Course_Window):
-    def __init__(self):
+    def __init__(self, cursor):
         super().__init__()
         self.setupUi(self)
+        self.cursor = cursor
+
+    def clear_table(self):
+        self.tableWidget.setRowCount(0)
+
+    def read_data(self):
+        self.clear_table()
+        # print("Running query...")
+        self.cursor.execute('select * from course')
+        data = self.cursor.fetchall()
+        # print("Fetched data:", data)
+
+        self.tableWidget.setRowCount(len(data))
+
+        for row_index, row_data in enumerate(data):
+            for col_index, col_data in enumerate(row_data):
+                item = QTableWidgetItem(str(col_data))
+                self.tableWidget.setItem(row_index, col_index, item)
+
+        # print("Query finished.")
+
+
+    def search_data(self):
+        co_no = self.lineEdit.text()
+        co_name = self.lineEdit_2.text()
+
+        self.clear_table()
+
+        self.cursor.execute('select * from course where co_no= ? or co_name = ? ', (co_no, co_name))
+
+        data = self.cursor.fetchall()
+        # print("Fetched data:", data)
+
+        self.tableWidget.setRowCount(len(data))
+
+        for row_index, row_data in enumerate(data):
+            for col_index, col_data in enumerate(row_data):
+                item = QTableWidgetItem(str(col_data))
+                self.tableWidget.setItem(row_index, col_index, item)
+
+    def insert_data(self):
+        co_no = self.lineEdit.text()
+        co_name = self.lineEdit_2.text()
+        co_time = self.lineEdit_3.text()
+        co_credit = self.lineEdit_4.text()
+
+        self.cursor.execute("""
+                        MERGE INTO course AS target
+                        USING (VALUES (?, ?, ?, ?)) AS source (co_no, co_name, co_time, co_credit)
+                        ON target.co_no = source.co_no
+                        WHEN MATCHED THEN
+                            UPDATE SET co_name = source.co_name, co_time = source.co_time, co_credit = source.co_credit
+                        WHEN NOT MATCHED THEN
+                            INSERT (co_no, co_name, co_time, co_credit) VALUES (source.co_no, source.co_name, source.co_time, source.co_credit);
+                    """, (co_no, co_name, co_time, co_credit))
+        self.cursor.commit()
+        self.read_data()
+
+    def delete_data(self):
+        co_no = self.lineEdit.text()
+        co_name = self.lineEdit_2.text()
+        co_time = self.lineEdit_3.text()
+        co_credit = self.lineEdit_4.text()
+
+        self.cursor.execute("delete from course where co_no = ? and co_name  = ?", (co_no, co_name))
+        self.cursor.commit()
+
+        self.read_data()
+
+    def update_data(self):
+        co_no = self.lineEdit.text()
+        co_name = self.lineEdit_2.text()
+        co_time = self.lineEdit_3.text()
+        co_credit = self.lineEdit_4.text()
+
+        self.cursor.execute("update course set co_name = ?, co_time = ?, co_credit = ? where co_no = ?", (co_name, co_time, co_credit, co_no))
+        self.cursor.commit()
+
+        self.read_data()
 
 def button_binding(Mainwindow, Studentwindow, Coursewindow, Choicewindow, Classwindow):
 
@@ -136,9 +369,26 @@ def button_binding(Mainwindow, Studentwindow, Coursewindow, Choicewindow, Classw
     Studentwindow.pushButton_4.clicked.connect(Studentwindow.delete_data)
     Studentwindow.pushButton_5.clicked.connect(Studentwindow.update_data)
 
+    #binding Coursewindow buttons
+    Coursewindow.pushButton.clicked.connect(Coursewindow.read_data)
+    Coursewindow.pushButton_2.clicked.connect(Coursewindow.search_data)
+    Coursewindow.pushButton_3.clicked.connect(Coursewindow.insert_data)
+    Coursewindow.pushButton_4.clicked.connect(Coursewindow.delete_data)
+    Coursewindow.pushButton_5.clicked.connect(Coursewindow.update_data)
 
+    #binding Choicewindow buttons
+    Choicewindow.pushButton.clicked.connect(Choicewindow.read_data)
+    Choicewindow.pushButton_2.clicked.connect(Choicewindow.search_data)
+    Choicewindow.pushButton_3.clicked.connect(Choicewindow.insert_data)
+    Choicewindow.pushButton_4.clicked.connect(Choicewindow.delete_data)
+    Choicewindow.pushButton_5.clicked.connect(Choicewindow.update_data)
 
-
+    #binding Classwindow buttons
+    Classwindow.pushButton.clicked.connect(Classwindow.read_data)
+    Classwindow.pushButton_2.clicked.connect(Classwindow.search_data)
+    Classwindow.pushButton_3.clicked.connect(Classwindow.insert_data)
+    Classwindow.pushButton_4.clicked.connect(Classwindow.delete_data)
+    Classwindow.pushButton_5.clicked.connect(Classwindow.update_data)
 
 class Database():
     def __init__(self, server, database, uid, pwd):
@@ -190,9 +440,9 @@ if __name__ == '__main__':
 
         Mainwindow = MainWindow()
         Studentwindow = StudentWindow(con.cursor)
-        Coursewindow = CourseWindow() # add con.cursor
-        Choicewindow = ChoiceWindow() #add con.cursor
-        Classwindow = ClassWindow()   #add con.cursor
+        Coursewindow = CourseWindow(con.cursor) # add con.cursor
+        Choicewindow = ChoiceWindow(con.cursor) #add con.cursor
+        Classwindow = ClassWindow(con.cursor)   #add con.cursor
 
         button_binding(Mainwindow, Studentwindow, Coursewindow, Choicewindow, Classwindow)
 
