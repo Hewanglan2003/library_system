@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>1220</x>
-      <y>900</y>
+      <y>798</y>
       <width>131</width>
       <height>61</height>
      </rect>
@@ -38,6 +38,9 @@
       <width>291</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -90,14 +93,17 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
+    </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
       <x>500</x>
-      <y>890</y>
+      <y>868</y>
       <width>451</width>
-      <height>201</height>
+      <height>150</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -115,6 +121,9 @@
       <width>291</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="tableWidget">
@@ -162,7 +171,7 @@
     <property name="geometry">
      <rect>
       <x>1430</x>
-      <y>900</y>
+      <y>798</y>
       <width>131</width>
       <height>61</height>
      </rect>
@@ -178,7 +187,7 @@
     <property name="geometry">
      <rect>
       <x>1430</x>
-      <y>1010</y>
+      <y>908</y>
       <width>131</width>
       <height>61</height>
      </rect>
@@ -194,7 +203,7 @@
     <property name="geometry">
      <rect>
       <x>1220</x>
-      <y>1010</y>
+      <y>908</y>
       <width>131</width>
       <height>61</height>
      </rect>

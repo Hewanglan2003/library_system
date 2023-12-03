@@ -90,6 +90,12 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
@@ -253,6 +259,9 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_3">
     <property name="geometry">
@@ -262,6 +271,9 @@
       <width>291</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_4">
@@ -273,6 +285,9 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_5">
     <property name="geometry">
@@ -282,6 +297,9 @@
       <width>291</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
     </property>
    </widget>
   </widget>

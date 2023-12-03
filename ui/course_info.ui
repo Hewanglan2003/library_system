@@ -39,6 +39,9 @@
       <height>71</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
+    </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
@@ -64,6 +67,9 @@
       <width>291</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -136,6 +142,9 @@
       <width>291</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -251,6 +260,9 @@
       <width>291</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Adobe Devanagari&quot;;</string>
     </property>
    </widget>
   </widget>
